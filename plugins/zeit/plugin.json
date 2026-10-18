@@ -1,0 +1,27 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "zeit",
+  "version": "0.1.0",
+  "description": "Create your Zeit account from chat with a private email verification form.",
+  "homepage": "https://tryzeit.com",
+  "repository": "https://github.com/tryzeit/zeit",
+  "author": {
+    "name": "Zeit"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Zeit",
+        "shortDescription": "Get started with Zeit",
+        "developerName": "Zeit",
+        "category": "Productivity",
+        "capabilities": [
+          "interactive"
+        ],
+        "defaultPrompt": [
+          "Help me create a Zeit account."
+        ]
+      }
+    }
+  }
+}

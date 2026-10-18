@@ -1,0 +1,20 @@
+{
+  "name": "tryzeit",
+  "interface": {
+    "displayName": "Zeit"
+  },
+  "plugins": [
+    {
+      "name": "zeit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/zeit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
