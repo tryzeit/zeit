@@ -5,14 +5,19 @@ opens a verification form. Enter the code in the form, never in chat.
 
 ## Install in Codex
 
-After this package and its server release are published:
+Use **Install in Codex** on [tryzeit.com](https://tryzeit.com). It opens the Codex
+desktop app with a setup prompt; press Send to install and begin onboarding.
+Installation may require confirmation.
+
+Alternatively, add the marketplace:
 
 ```sh
 codex plugin marketplace add tryzeit/zeit
 ```
 
 Open the Plugins Directory, choose **Zeit**, install the plugin, and ask:
-“Help me create a Zeit account.” Hosts with MCP Apps display the form in chat;
+“Set up my Zeit account.” The package registers `skills/onboarding/SKILL.md` as
+its setup skill so installation and onboarding can continue in the same chat. Hosts with MCP Apps display the form in chat;
 other hosts can open the returned browser link.
 
 GitHub distribution does not publish the plugin to the universal ChatGPT directory.

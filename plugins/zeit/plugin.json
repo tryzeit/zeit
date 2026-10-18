@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "zeit",
-  "version": "0.1.0",
-  "description": "Create your Zeit account from chat with a private email verification form.",
+  "version": "0.1.1",
+  "description": "Set up your Zeit account from chat with a private email verification form.",
   "homepage": "https://tryzeit.com",
   "repository": "https://github.com/tryzeit/zeit",
   "author": {
@@ -12,16 +12,33 @@
     "com.openai": {
       "interface": {
         "displayName": "Zeit",
-        "shortDescription": "Get started with Zeit",
+        "shortDescription": "Set up your Zeit account from chat",
         "developerName": "Zeit",
         "category": "Productivity",
         "capabilities": [
           "interactive"
         ],
         "defaultPrompt": [
-          "Help me create a Zeit account."
+          "Set up my Zeit account."
+        ],
+        "longDescription": "Zeit is building a way for businesses to collect information from clients and collaborators inside their AI workflow. This onboarding preview lets you create an account and verify your email in a private form. Account connection and information requests are not available in this release.",
+        "websiteURL": "https://tryzeit.com",
+        "brandColor": "#367E02",
+        "brandColorDark": "#58CC03",
+        "composerIcon": "./assets/zeit-icon-color.png",
+        "composerIconDark": "./assets/zeit-icon-white.png",
+        "logo": "./assets/zeit-social-icon.png",
+        "logoDark": "./assets/zeit-inverse-avatar.png",
+        "screenshots": [
+          "./assets/verification.png"
         ]
-      }
+      },
+      "onboardingSkill": "./skills/onboarding/SKILL.md"
     }
-  }
+  },
+  "keywords": [
+    "zeit",
+    "onboarding",
+    "information-requests"
+  ]
 }
