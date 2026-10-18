@@ -1,11 +1,25 @@
 # Zeit
 
-Zeit's plugin for ChatGPT and Codex. The first release sends an email code and
-opens a verification form. Enter the code in the form, never in chat.
+Request information from clients, teammates, and collaborators—and bring it back
+into your AI workflow.
+
+Your AI has the conversation. Other people have the missing information. Zeit helps
+you turn that gap into a request, collect what you need, and
+keep working with the answers in chat.
+
+## How it works
+
+- Turn your chat context into questions for the right people.
+- Collect answers and files through a shared link, without requiring an account.
+- Track responses in one place and bring them back into your AI workflow.
+
+From client intake to gathering information for a confidential information
+memorandum, the goal is the same: spend less time chasing information and more
+time using it.
 
 ## Install in Codex
 
-Use **Install in Codex** on [tryzeit.com](https://tryzeit.com). It opens the Codex
+Choose **Install → Codex** on [tryzeit.com](https://tryzeit.com). It opens the Codex
 desktop app with a setup prompt; press Send to install and begin onboarding.
 Installation may require confirmation.
 
@@ -16,7 +30,7 @@ codex plugin marketplace add tryzeit/zeit
 ```
 
 Open the Plugins Directory, choose **Zeit**, install the plugin, and ask:
-“Set up my Zeit account.” The package registers `skills/onboarding/SKILL.md` as
+“Get started with Zeit.” The package registers `skills/onboarding/SKILL.md` as
 its setup skill so installation and onboarding can continue in the same chat. The verification flow requires an MCP Apps host and displays a read-only email,
 verification code field, and Verify email button in chat.
 
@@ -30,8 +44,3 @@ in the team's monorepo and exported here; do not edit this mirror directly.
 The package is in `plugins/zeit`; the marketplace catalog is in
 `.agents/plugins/marketplace.json`. The hosted MCP endpoint is
 `https://mcp.tryzeit.com/`. No local server or API key is needed to use it.
-
-This release supports account creation, email verification, OAuth account
-connection, and the protected `get_account` tool. Verification alone does not
-connect the account: the browser sign-in and consent flow grants `account:read`.
-Information requests will follow in a later release.

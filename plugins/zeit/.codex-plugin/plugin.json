@@ -1,7 +1,7 @@
 {
   "name": "zeit",
-  "version": "0.2.1",
-  "description": "Create and connect your Zeit account from chat.",
+  "version": "0.2.2",
+  "description": "Request information from clients, teammates, and collaborators—and bring it back into your AI workflow.",
   "homepage": "https://tryzeit.com",
   "repository": "https://github.com/tryzeit/zeit",
   "author": {
@@ -9,21 +9,23 @@
   },
   "keywords": [
     "zeit",
-    "onboarding",
-    "information-requests"
+    "information-requests",
+    "client-intake",
+    "collaboration",
+    "ai-workflows"
   ],
   "interface": {
     "displayName": "Zeit",
-    "shortDescription": "Create and connect your Zeit account",
+    "shortDescription": "Bring information from people into your AI workflow",
     "developerName": "Zeit",
     "category": "Productivity",
     "capabilities": [
       "interactive"
     ],
     "defaultPrompt": [
-      "Set up my Zeit account."
+      "Get started with Zeit."
     ],
-    "longDescription": "Zeit helps businesses bring client and collaborator information into their AI workflow. This preview supports email verification, secure account connection, and reading your connected account. Information requests are coming next.",
+    "longDescription": "Request information from clients, teammates, and collaborators—and bring it back into your AI workflow. Turn chat context into questions, collect answers and files through a shared link, and track responses in one place. From client intake to gathering information for a confidential information memorandum, Zeit helps you spend less time chasing information and more time using it.",
     "websiteURL": "https://tryzeit.com",
     "brandColor": "#367E02",
     "brandColorDark": "#58CC03",
