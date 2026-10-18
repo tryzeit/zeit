@@ -15,14 +15,23 @@ blocker instead of claiming signup succeeded.
 
 The user enters the code directly in the form. Never ask them to paste a password
 or verification code into chat, and never read their inbox to retrieve the code.
-If the host cannot display the form, show the browser link returned by the tool
-and ask the user to return to this chat after verification.
+Use the attached MCP Apps form with the prefilled, read-only email, code field,
+and Verify email button. Do not open a browser verification page or invent a
+fallback link. If the form does not render, report that UI problem rather than
+claiming that verification succeeded.
 
 Wait for the form's verification result or the user's confirmation. Sending a
-code is not verification. After success, briefly confirm their account is ready.
+code is not verification. After success, call `get_account` to check the account connection.
 If they need another code, call `create_account` again only when requested.
 Respect rate-limit errors; do not automatically retry.
 
-This preview supports account creation and email verification only. Verification
-does not authorize an MCP connection. Do not attempt OAuth or authenticated
-account tools until that functionality is available.
+When `get_account` requires authentication, use the host's connection flow. The
+browser signs the user in with an email code and asks them to allow account:read.
+After the host finishes OAuth, call `get_account` again and confirm the returned
+account email. Do not ask for tokens or codes in chat, or describe verification
+alone as a connected account. If the user already has an account, begin with
+`get_account` and connect it rather than restarting account creation.
+
+This preview supports onboarding and reading the connected account. Information
+requests are not available yet. Do not create a second connection manually if the
+host already manages the plugin's MCP server.
