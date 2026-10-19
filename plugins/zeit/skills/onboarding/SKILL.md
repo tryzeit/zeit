@@ -9,9 +9,11 @@ tool to send a code and display the verification form. Do not stop at confirming
 that the plugin was installed or ask whether to start already-requested setup.
 
 Discover the installed Zeit tools through the host's tool discovery if needed.
-Do not claim a new chat or restart is required merely because tools were absent
-before installation. If discovery still cannot find them, explain the actual
-blocker instead of claiming signup succeeded.
+If tools are missing after installation, use an available host-supported plugin
+or MCP configuration refresh, then rediscover once and continue in this chat.
+Do not start a separate app-server process, edit unrelated settings, repeatedly
+reinstall, or claim a refresh happened without confirmation. If refresh is
+unavailable or tools remain missing, explain the limitation and offer a new chat.
 
 The user enters the code directly in the form. Never ask them to paste a password
 or verification code into chat, and never read their inbox to retrieve the code.
@@ -21,7 +23,17 @@ fallback link. If the form does not render, report that UI problem rather than
 claiming that verification succeeded.
 
 Wait for the form's verification result or the user's confirmation. Sending a
-code is not verification. After success, call `get_account` to check the account connection.
+code is not verification. After success, the form may provide
+`access_token`, `refresh_token`, `client_id`,
+`token_endpoint`, `resource`, `scope`, and `expires_in`. These belong to Zeit's
+onboarding OAuth client, not necessarily the host's registered OAuth client.
+Try importing credentials only if the host exposes a supported mechanism that
+accepts that client identity and resource. Do not write internal OAuth stores,
+print tokens, place them in commands, or silently create a duplicate MCP server.
+A bearer-only setter does not install refresh behavior. If full credential import
+is unavailable, use the normal OAuth connection flow. Do not retry a consumed
+verification code to obtain credentials. Call `get_account` to confirm connection;
+a failed import or authentication error also falls back to normal OAuth.
 If they need another code, call `create_account` again only when requested.
 Respect rate-limit errors; do not automatically retry.
 
