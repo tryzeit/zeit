@@ -1,6 +1,6 @@
 {
   "name": "zeit",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Request information from clients, teammates, and collaborators—and bring it back into your AI workflow.",
   "homepage": "https://tryzeit.com",
   "repository": "https://github.com/tryzeit/zeit",
@@ -19,9 +19,7 @@
     "shortDescription": "Bring information from people into your AI workflow",
     "developerName": "Zeit",
     "category": "Productivity",
-    "capabilities": [
-      "interactive"
-    ],
+    "capabilities": [],
     "defaultPrompt": [
       "Get started with Zeit."
     ],
@@ -33,9 +31,7 @@
     "composerIconDark": "./assets/zeit-icon-white.png",
     "logo": "./assets/zeit-social-icon.png",
     "logoDark": "./assets/zeit-inverse-avatar.png",
-    "screenshots": [
-      "./assets/verification.png"
-    ]
+    "screenshots": []
   },
   "extensions": {
     "com.openai": {

@@ -31,8 +31,10 @@ codex plugin marketplace add tryzeit/zeit
 
 Open the Plugins Directory, choose **Zeit**, install the plugin, and ask:
 “Get started with Zeit.” The package registers `skills/onboarding/SKILL.md` as
-its setup skill so installation and onboarding can continue in the same chat. The verification flow requires an MCP Apps host and displays a read-only email,
-verification code field, and Verify email button in chat.
+its setup skill so installation and onboarding can continue in the same chat.
+Connect through the browser: enter your email, enter the emailed code, and select
+**Verify and connect**. This creates an account or signs you in, then connects
+the AI host through OAuth. Codes and tokens never need to be pasted into chat.
 
 GitHub distribution does not publish the plugin to the universal ChatGPT directory.
 
