@@ -31,10 +31,17 @@ codex plugin marketplace add tryzeit/zeit
 
 Open the Plugins Directory, choose **Zeit**, install the plugin, and ask:
 “Get started with Zeit.” The package registers `skills/onboarding/SKILL.md` as
-its setup skill so installation and onboarding can continue in the same chat.
+its setup skill. Onboarding starts the connection automatically when the host
+supports it. If the current chat has not loaded the plugin, start a new chat with
+“Connect to Zeit using the installed plugin, then get my account.”
 Connect through the browser: enter your email, enter the emailed code, and select
 **Verify and connect**. This creates an account or signs you in, then connects
 the AI host through OAuth. Codes and tokens never need to be pasted into chat.
+
+After sign-in, onboarding suggests a new chat and supplies a copyable prompt to
+use the connected Zeit plugin and get your account. Some hosts do not immediately
+load newly connected tools in the current chat. A missing tool does not mean you
+need to reinstall or repeat sign-in.
 
 GitHub distribution does not publish the plugin to the universal ChatGPT directory.
 
