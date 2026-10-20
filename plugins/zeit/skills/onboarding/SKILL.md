@@ -10,8 +10,7 @@ tools immediately in the same chat; do not claim this happens in every host.
 ## Connect after installation
 
 Start connecting as part of onboarding; do not wait for a separate “connect to
-Zeit” request. If `get_account` is available, call it first. Success means setup
-is complete. Otherwise, use the host's existing Zeit connection to start its
+Zeit” request. If `get_account` is available, call it first. Success confirms identity; then follow Workspace setup below. Otherwise, use the host's existing Zeit connection to start its
 normal MCP OAuth flow. Missing tools do not prevent attempting a supported host
 connection action. In Codex, prefer the host's connection action; if unavailable,
 `codex mcp login zeit` is a fallback when the installed CLI recognizes that
@@ -55,7 +54,7 @@ Zeit is connected. I suggest starting a new chat so it can load the connected
 plugin. Copy and paste this prompt:
 
 ```text
-Use the connected Zeit plugin to get my account and confirm which email is signed in. Zeit is already installed and OAuth completed; try get_account first. Only ask me to reconnect if the host reports that authentication is required.
+Use the connected Zeit plugin to get my account and confirm which email is signed in. Zeit is already installed and OAuth completed; try get_account first. Only ask me to reconnect if the host reports that authentication is required. Then get my workspace. If none exists, ask me to name it, suggesting Personal, before creating it.
 ```
 
 If the user has a specific next task, include it after the account check in the
@@ -72,3 +71,24 @@ Open a new chat only when the user requests it and the host provides that capabi
 Do not start a separate app-server process, edit unrelated settings, repeatedly
 reinstall, create a duplicate MCP server, or modify internal credential stores.
 Do not claim a refresh or connection succeeded without host confirmation.
+
+
+## Workspace setup
+
+After confirming identity, call `get_workspace`. A successful non-null result means
+workspace setup is complete; reuse it. Do not create or rename during a read.
+
+If the result is null, ask: “What would you like to name your workspace? Default: Personal.”
+Wait for the user's answer. Accept Personal only when they choose or confirm the default.
+If they already gave a name or explicitly asked to create a workspace, that is confirmation.
+Call `create_workspace` with the chosen name, then report the returned name and role.
+Retrying creation returns the existing workspace; use `update_workspace` for an explicit rename.
+
+If the user intends to join an invited team, do not create Personal automatically.
+Invitations are not implemented yet; explain that limitation without claiming to send one.
+If workspace scopes are missing, explain that the connection needs workspace permissions;
+do not treat this as a missing workspace or create one under another identity.
+
+Prefer finishing this in the current chat when tools are available. If a host requires
+a new-chat handoff, include the workspace lookup and name-confirmation step in its prompt.
+Do not claim team membership grants access to private requests.
