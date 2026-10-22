@@ -54,7 +54,7 @@ Zeit is connected. I suggest starting a new chat so it can load the connected
 plugin. Copy and paste this prompt:
 
 ```text
-Use the connected Zeit plugin to get my account and confirm which email is signed in. Zeit is already installed and OAuth completed; try get_account first. Only ask me to reconnect if the host reports that authentication is required. Then get my workspace. If none exists, ask me to name it, suggesting Personal, before creating it.
+Use the connected Zeit plugin to get my account and confirm which email is signed in. Zeit is already installed and OAuth completed; try get_account first. Only ask me to reconnect if the host reports that authentication is required. Then get my active workspace. Signup normally provisions an initial workspace named Personal.
 ```
 
 If the user has a specific next task, include it after the account check in the
@@ -78,17 +78,20 @@ Do not claim a refresh or connection succeeded without host confirmation.
 After confirming identity, call `get_workspace`. A successful non-null result means
 workspace setup is complete; reuse it. Do not create or rename during a read.
 
-If the result is null, ask: “What would you like to name your workspace? Default: Personal.”
-Wait for the user's answer. Accept Personal only when they choose or confirm the default.
-If they already gave a name or explicitly asked to create a workspace, that is confirmation.
-Call `create_workspace` with the chosen name, then report the returned name and role.
-Retrying creation returns the existing workspace; use `update_workspace` for an explicit rename.
+If the result is null, call `create_workspace` with the default name Personal to finish
+initial provisioning. It reuses an existing membership and never creates a duplicate.
+Personal is only a default name; use `update_workspace` when the user asks to rename it.
 
-If the user intends to join an invited team, do not create Personal automatically.
-Invitations are not implemented yet; explain that limitation without claiming to send one.
-If workspace scopes are missing, explain that the connection needs workspace permissions;
-do not treat this as a missing workspace or create one under another identity.
+Users can belong to several workspaces. Use `list_workspaces` to discover memberships.
+Use `switch_workspace` only when the user chooses a destination, and report its name.
+Selection is global across the dashboard and all chats; other ordinary tools resolve it
+on the server. Existing in-flight operations retain their original workspace.
 
-Prefer finishing this in the current chat when tools are available. If a host requires
-a new-chat handoff, include the workspace lookup and name-confirmation step in its prompt.
-Do not claim team membership grants access to private requests.
+Use `list_pending_invitations` to find invitations for the verified email. Use `respond_to_workspace_invitation` with its ID and status accept or deny after user
+confirmation. The verified email must match; an ID alone gives no access. Acceptance
+adds membership, preserves resources, and never changes active selection. Offer an explicit
+switch to the joined workspace. Denial adds no membership and leaves the active workspace unchanged.
+
+If workspace scopes are missing, explain that the connection needs the corresponding
+workspace action permission; do not treat this as a missing workspace or create one under
+another identity. Membership never grants access to teammates' private requests.
