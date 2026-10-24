@@ -1,6 +1,6 @@
 {
   "name": "zeit",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Request information from clients, teammates, and collaborators—and bring it back into your AI workflow.",
   "homepage": "https://tryzeit.com",
   "repository": "https://github.com/tryzeit/zeit",
@@ -16,7 +16,7 @@
   ],
   "interface": {
     "displayName": "Zeit",
-    "shortDescription": "Bring information from people into your AI workflow",
+    "shortDescription": "Request information for chats",
     "developerName": "Zeit",
     "category": "Productivity",
     "capabilities": [],
@@ -25,6 +25,9 @@
     ],
     "longDescription": "Request information from clients, teammates, and collaborators—and bring it back into your AI workflow. Turn chat context into questions, collect answers and files through a shared link, and track responses in one place. From client intake to gathering information for a confidential information memorandum, Zeit helps you spend less time chasing information and more time using it.",
     "websiteURL": "https://tryzeit.com",
+    "supportURL": "https://tryzeit.com/support",
+    "privacyPolicyURL": "https://tryzeit.com/privacy",
+    "termsOfServiceURL": "https://tryzeit.com/terms",
     "brandColor": "#367E02",
     "brandColorDark": "#58CC03",
     "composerIcon": "./assets/zeit-icon-color.png",

@@ -33,6 +33,8 @@ Open the authorization URL returned by the host. This flow handles both new and
 existing accounts; no separate signup is needed. Do not collect email in chat.
 The user enters their email in the browser, then the emailed code, and selects
 **Verify and connect** to allow the displayed application and permissions.
+Existing verified accounts can choose **Other sign-in options** and use their
+password instead. Passwords must be entered only on the browser sign-in page, never in chat.
 
 Never ask for passwords or verification codes in chat, read their inbox for a
 code, or ask them to paste tokens. Do not construct an OAuth URL yourself or
