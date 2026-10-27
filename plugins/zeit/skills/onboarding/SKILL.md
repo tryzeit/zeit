@@ -97,3 +97,11 @@ switch to the joined workspace. Denial adds no membership and leaves the active 
 If workspace scopes are missing, explain that the connection needs the corresponding
 workspace action permission; do not treat this as a missing workspace or create one under
 another identity. Membership never grants access to teammates' private requests.
+
+### Workspace names and slugs
+
+Workspace `name` is a non-unique display name and defaults to `Personal`. The separate
+`slug` is globally unique. Omit the slug on creation to generate one automatically.
+Only change a slug when the user requests it; a name change leaves it unchanged.
+Slugs use 3–63 lowercase letters, numbers, and single hyphens. If the API returns
+`workspace_slug_taken`, ask the user to choose another slug and retry; keep their display name.

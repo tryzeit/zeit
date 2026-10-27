@@ -1,6 +1,6 @@
 {
   "name": "zeit",
-  "version": "0.2.8",
+  "version": "0.2.10",
   "description": "Request information from clients, teammates, and collaborators—and bring it back into your AI workflow.",
   "homepage": "https://tryzeit.com",
   "repository": "https://github.com/tryzeit/zeit",
@@ -38,7 +38,66 @@
   },
   "extensions": {
     "com.openai": {
-      "onboardingSkill": "./skills/onboarding/SKILL.md"
+      "onboardingSkill": "./skills/onboarding/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "1. Confirm the connected account and workspace. Run positive cases 1–5 in order in one chat using the supplied reviewer account. No seeded records are required; the cases create their own fictional data. Keep the run marker and returned record IDs in the chat for subsequent cases.",
+              "prompt": "Use Zeit to show my connected account and current workspace. Confirm the active workspace is Personal before making changes. Generate a short unique review run marker, show it, and retain it for the remaining review cases. Do not create, rename, or switch workspaces.",
+              "tools_triggered": "get_account, get_workspace",
+              "expected_behavior": "Returns the authenticated reviewer account and its active Personal workspace. Shows a fresh run marker for this review run. If another workspace is active, stops for clarification rather than changing it. This case creates no records and sends no messages."
+            },
+            {
+              "description": "2. Import and find fictional contacts. Prerequisite: case 1 and its run marker. The example.com addresses below are fixture data only and must never receive an invitation.",
+              "prompt": "In my current Zeit workspace, import these two separate fictional contacts, appending our review run marker to each name: Morgan Review, company Northstar Studio, work email morgan.review@example.com; and Taylor Review, company Cedar Studio, work email taylor.review@example.com. Then search Zeit for Morgan using the marked name and show the saved record. Do not send messages or mark their addresses verified.",
+              "tools_triggered": "import_contacts, list_contacts, get_contact",
+              "expected_behavior": "Creates two separate contacts with exactly the supplied company and email data and the marked names. Searches for and reads Morgan by the returned contact ID. Generates one import idempotency key and reuses it on an uncertain retry, without creating another batch. Neither contact is merged, marked verified, or messaged."
+            },
+            {
+              "description": "3. Create and inspect a typed questionnaire with a required file upload. Prerequisite: case 1. Record the returned six-character Request ID; use this exact ID in cases 4–5 rather than selecting a request by title.",
+              "prompt": "Create a private Zeit request titled \"Zeit review onboarding\" followed by our run marker. Context: \"Fictional project intake for plugin review.\" Add three required questions in this order: short text \"What is your project name?\"; number \"What is your budget in USD?\"; date \"What is your target start date?\" Add a required attachment requirement titled \"Project brief\", allowing text/plain files up to 1 MiB. Do not link a contact or send invitations. Read the saved request back and show its ID and fields.",
+              "tools_triggered": "create_request, get_request",
+              "expected_behavior": "Saves one private draft with the requested question types/order/required flags and required Project brief upload rule (text/plain, maximum 1048576 bytes). Uses fresh UUIDs for the creation key, question IDs and attachment requirement ID. Reads the returned Request ID and preserves all those IDs for later cases. A repeated uncertain creation uses the same key. No email is sent."
+            },
+            {
+              "description": "4. Review partial edits before they are saved. Prerequisite: the unsent draft from case 3 in the same chat. When the inline approval card appears, the reviewer approves only the title edit and skips/denies the question-wording edit. Continue by asking the model to read the saved Request again. The inline approval UI is required; a textual approval alone must not be treated as persistence.",
+              "prompt": "For the exact Request ID we created in case 3, propose two edits: change its title to \"Reviewed onboarding\" followed by our run marker, and change the budget question wording to \"What is your approved budget in USD?\" Keep every question ID, type, order and required flag, context and attachment requirement unchanged. Show the approval card; do not claim the edits are saved before I act. After I approve the title and skip the wording edit in the card, retrieve the same Request and show what persisted.",
+              "tools_triggered": "get_request, update_request, get_request",
+              "expected_behavior": "Reads current definitions and proposes exactly two independent field edits using the existing question ID. The card lets the reviewer approve the title and deny the wording edit. Before approval, no persisted edit is claimed. A subsequent read shows the new title, the original budget wording \"What is your budget in USD?\", and unchanged question/attachment IDs and other fields. No invitation is sent. If the host cannot render the card, reports the limitation instead of bypassing approval."
+            },
+            {
+              "description": "5. Send, collect a file and answers without a recipient account, then retrieve them in chat. Prerequisites: cases 3–4 completed, a reviewer-controlled email inbox, and a local UTF-8 file named review-brief.txt containing \"Northstar demo project brief. Synthetic review data only.\" The reviewer supplies their own deliverable email when asked, opens the invitation received there in a signed-out/private browser, fills the project name as \"Northstar Demo\", budget as 12000, and target start date as 2027-01-15, uploads that text file and explicitly submits. Then return to the same chat and say \"I submitted the response; retrieve the request again.\" No recipient Zeit account or sign-in should be needed. Do not use the example.com contacts from case 2.",
+              "prompt": "Use the exact Request ID from cases 3–4. Read the saved content and ask me for an email inbox I control for this review. Preview that exact recipient and the request, and wait for my explicit approval before sending. Send only to the address I supply; do not guess a destination from my account or contacts. I will open the emailed link, complete the questionnaire and upload review-brief.txt using the review instructions. After I say I submitted, retrieve the same Request and report the saved answers, submission state and uploaded file metadata.",
+              "tools_triggered": "get_request, send_request, get_request",
+              "expected_behavior": "Sends only after the reviewer approves the exact saved content and their supplied destination. Uses a UUID send idempotency key; uncertain retries preserve that key and recipients. Provider acceptance is distinguished from inbox receipt; pending/unknown outcomes are not reported as delivered or retried under a new key. The emailed private link opens without recipient registration, and submission requires the three answers and a completed Project brief upload. After submission, get_request returns the same Request with submitted_at, the supplied answers and review-brief.txt attachment metadata. Does not invent file contents or promise unsolicited chat continuation. If inbox delivery, upload or submission fails, reports that step as incomplete."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Drafting an email is a writing task, not an instruction to save or send a Zeit request. Run this in a fresh chat with Zeit available.",
+              "prompt": "Write a short, polite email asking a client to send their project brief and budget. Only give me the draft text; do not create a form, save contacts, or send anything.",
+              "tools_triggered": "None",
+              "expected_behavior": "Writes the email directly without invoking Zeit, creating a Request/contact, or sending an invitation."
+            },
+            {
+              "description": "Summarizing supplied text needs no workspace lookup or client-input collection. Run in a fresh chat.",
+              "prompt": "Summarize this fictional client note in two bullets: \"Northstar needs a website refresh. The budget is USD 12,000. The target start date is January 15, 2027.\" Use only this text; do not look up or save anything.",
+              "tools_triggered": "None",
+              "expected_behavior": "Summarizes the provided text directly. Does not search Zeit contacts or Requests, persist the note, or ask a client for information."
+            },
+            {
+              "description": "A personal alarm is outside the exposed Zeit tool set. Run in a fresh chat; the word reminder must not cause the model to create or send a questionnaire.",
+              "prompt": "Set a personal alarm for 9 AM tomorrow to remind me to stretch. This is only for me, not a client request.",
+              "tools_triggered": "None",
+              "expected_behavior": "Does not invoke Zeit or create contacts, Requests or invitations. Uses an appropriate separately available reminder capability, or explains that it cannot set the alarm; never claims Zeit scheduled one."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "Zeit helps you request information without leaving your AI conversation. Collect answers, files, and feedback through a simple link—recipients don’t need an account. Track your requests and bring responses back into chat so you can keep your work moving."
+      }
     }
   },
   "skills": "./skills/",
